@@ -6,7 +6,7 @@ module.exports = {
 		if (authorization && authorization.startsWith("Bearer ")) {
 			const token = authorization.slice(7);
 			try {
-				const user = jwt.verify(token, process.env.JWTSECRET);
+				const user = jwt.verify(token, process.env.JWTSECRET || "jwtjwt");
 				req.user = user;
 				next();
 			} catch {
