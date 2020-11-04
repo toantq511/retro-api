@@ -2,7 +2,7 @@ const express = require("express");
 const admin = require("firebase-admin");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
-require("dotenv").config();
+require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
 
 const serviceAccount = require("./config/serviceAccount.json");
 const jwt = require("jsonwebtoken");
