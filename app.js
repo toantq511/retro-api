@@ -2,7 +2,7 @@ const express = require("express");
 const admin = require("firebase-admin");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
-require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
+require("dotenv").config({ silent: process.env.NODE_ENV === "production" });
 
 const serviceAccount = require("./config/serviceAccount.json");
 const jwt = require("jsonwebtoken");
@@ -277,5 +277,7 @@ app.put("/api/user", (req, res) => {
 			}
 		});
 });
+
+app.get("/", (req, res) => res.send("Hello"));
 
 app.listen(8080, () => console.log("Server on localhost:" + 8080));
