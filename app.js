@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
@@ -280,4 +280,4 @@ app.put("/api/user", (req, res) => {
 
 app.get("/", (req, res) => res.send("Hello"));
 
-app.listen(8080, () => console.log("Server on localhost:" + 8080));
+app.listen(PORT, () => console.log("Server on localhost:" + PORT));
