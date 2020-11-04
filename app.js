@@ -63,7 +63,10 @@ app.post("/api/login", (req, res) => {
 						data: {
 							username: matched.data().username,
 							name: matched.data().name,
-							token: jwt.sign(matched.data(), process.env.JWTSECRET),
+							token: jwt.sign(
+								matched.data(),
+								process.env.JWTSECRET || "jwtjwt"
+							),
 						},
 					});
 				else res.json({ error: { code: 401, message: "Password incorrect" } });
@@ -272,7 +275,10 @@ app.put("/api/user", authMdw.getAuthentication, (req, res) => {
 								data: {
 									username: doc.data().username,
 									name: doc.data().name,
-									token: jwt.sign(doc.data(), process.env.JWTSECRET),
+									token: jwt.sign(
+										doc.data(),
+										process.env.JWTSECRET || "jwtjwt"
+									),
 								},
 							})
 						);
