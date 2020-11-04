@@ -68,6 +68,10 @@ app.post("/api/login", (req, res) => {
 					});
 				else res.json({ error: { code: 401, message: "Password incorrect" } });
 			} else res.json({ error: { code: 401, message: "Username not exist" } });
+		})
+		.catch((err) => {
+			console.log(err);
+			res.json({ error: { code: 500, message: "Something wrong" } });
 		});
 });
 
