@@ -70,7 +70,6 @@ app.post("/api/login", (req, res) => {
 			} else res.json({ error: { code: 401, message: "Username not exist" } });
 		});
 });
-app.use(authMdw.getAuthentication);
 
 const createObject = (req, data) => ({
 	...data,
@@ -86,7 +85,7 @@ const updateObject = (req, data) => ({
 	updatedBy: req.user.username,
 });
 
-app.get("/api/board/:id/column", (req, res) => {
+app.get("/api/board/:id/column", authMdw.getAuthentication, (req, res) => {
 	db.collection("item")
 		.where("boardId", "==", req.params.id)
 		.get()
@@ -105,7 +104,7 @@ app.get("/api/board/:id/column", (req, res) => {
 		});
 });
 
-app.post("/api/board", (req, res) => {
+app.post("/api/board", authMdw.getAuthentication, (req, res) => {
 	db.collection("board")
 		.add(createObject(req, req.body))
 		.then((value) =>
@@ -125,7 +124,7 @@ app.post("/api/board", (req, res) => {
 		);
 });
 
-app.get("/api/board", (req, res) => {
+app.get("/api/board", authMdw.getAuthentication, (req, res) => {
 	const { username } = req.user;
 	db.collection("board")
 		.where("createdBy", "==", username)
@@ -157,7 +156,7 @@ app.get("/api/board", (req, res) => {
 		});
 });
 
-app.get("/api/board/:id", (req, res) => {
+app.get("/api/board/:id", authMdw.getAuthentication, (req, res) => {
 	db.collection("board")
 		.doc(req.params.id)
 		.get()
@@ -186,7 +185,7 @@ app.get("/api/board/:id", (req, res) => {
 		});
 });
 
-app.post("/api/item", (req, res) => {
+app.post("/api/item", authMdw.getAuthentication, (req, res) => {
 	db.collection("item")
 		.add(createObject(req, req.body))
 		.then((value) =>
@@ -197,7 +196,7 @@ app.post("/api/item", (req, res) => {
 				.then((doc) => res.json({ data: { ...doc.data(), id: doc.id } }))
 		);
 });
-app.put("/api/item/:id", (req, res) => {
+app.put("/api/item/:id", authMdw.getAuthentication, (req, res) => {
 	const { id } = req.params;
 	db.collection("item")
 		.doc(id)
@@ -210,7 +209,7 @@ app.put("/api/item/:id", (req, res) => {
 		});
 });
 
-app.put("/api/board/:id", (req, res) => {
+app.put("/api/board/:id", authMdw.getAuthentication, (req, res) => {
 	const { id } = req.params;
 	db.collection("board")
 		.doc(id)
@@ -223,7 +222,7 @@ app.put("/api/board/:id", (req, res) => {
 		});
 });
 
-app.put("/api/user/password", (req, res) => {
+app.put("/api/user/password", authMdw.getAuthentication, (req, res) => {
 	const { username } = req.user;
 	const { oldPass, newPass } = req.body;
 	db.collection("users")
@@ -248,7 +247,7 @@ app.put("/api/user/password", (req, res) => {
 		});
 });
 
-app.put("/api/user", (req, res) => {
+app.put("/api/user", authMdw.getAuthentication, (req, res) => {
 	const { username } = req.user;
 	db.collection("users")
 		.where("username", "==", username)
