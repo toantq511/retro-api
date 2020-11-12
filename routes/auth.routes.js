@@ -4,6 +4,11 @@ const { db } = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+const tokenLife = parseInt(process.env.JWTLIFE || 100000);
+const tokenSecret = process.env.JWTSECRET || "jwtjwt";
+const refreshLife = parseInt(process.env.REFRESHLIFE || 1000000);
+const refreshSecret = process.env.REFRESHSECRET || "jwtjwtdasdasdas";
+
 router.post("/signup", (req, res) => {
 	db.collection("user")
 		.where("username", "==", req.body.username)
@@ -41,10 +46,13 @@ router.post("/login", (req, res) => {
 				const matched = snapshot.docs[0];
 				if (bcrypt.compareSync(password, matched.data().password)) {
 					const { password, ...user } = matched.data();
+					res.cookie("access-token", jwt.sign(user, tokenSecret));
 					res.json({
-						username: user.username,
-						name: user.name,
-						token: jwt.sign(user, process.env.JWTSECRET || "jwtjwt"),
+						user: {
+							username: user.username,
+							name: user.name,
+						},
+						accessToken: jwt.sign(user, tokenSecret),
 					});
 				} else res.status(401).send({ message: "Password incorrect" });
 			} else res.status(401).send({ message: "Username not exist" });
