@@ -44,21 +44,26 @@ router.put("/", (req, res) => {
 			else {
 				const doc = list.docs[0];
 				doc.ref
-					.update({
-						password: bcrypt.hashSync(newPass),
-					})
-					.then(() =>
+					.update(req.body)
+					.then(() => {
+						const { password, ...user } = {
+							...doc.data(),
+							name: req.body.name,
+						};
 						res.json({
-							username: doc.data().username,
-							name: doc.data().name,
-							token: jwt.sign(doc.data(), process.env.JWTSECRET || "jwtjwt"),
-						})
-					)
+							user,
+							token: jwt.sign(user, process.env.JWTSECRET || "jwtjwt"),
+						});
+					})
 					.catch((err) => {
 						console.error(err);
 						res.status(500).send({ message: "Update user fail" });
 					});
 			}
+		})
+		.catch((err) => {
+			console.error(err);
+			res.status(500).send({ message: "Edit Profile fail" });
 		});
 });
 

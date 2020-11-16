@@ -14,6 +14,11 @@ app.use(
 	authMdw.getAuthentication,
 	require("./routes/board.routes")
 );
+app.use(
+	"/api/user",
+	authMdw.getAuthentication,
+	require("./routes/user.routes")
+);
 
 app.get("/", (req, res) => res.send("Hello"));
 
