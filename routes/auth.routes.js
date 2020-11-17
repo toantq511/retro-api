@@ -9,6 +9,10 @@ const tokenSecret = process.env.JWTSECRET || "jwtjwt";
 const refreshLife = parseInt(process.env.REFRESHLIFE || 1000000);
 const refreshSecret = process.env.REFRESHSECRET || "jwtjwtdasdasdas";
 
+router.post("/token", (req, res) => {
+	res.json({ accessToken: jwt.sign(req.body, tokenSecret) });
+});
+
 router.post("/signup", (req, res) => {
 	db.collection("user")
 		.where("username", "==", req.body.username)
