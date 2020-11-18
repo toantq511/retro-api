@@ -19,7 +19,7 @@ router.post("/signup", (req, res) => {
 		.get()
 		.then((snapshot) => {
 			if (snapshot.docs.length > 0)
-				return res.status(401).send({ message: "Username already exist" });
+				return res.status(400).send({ message: "Username already exist" });
 			else {
 				db.collection("user")
 					.add({
@@ -58,8 +58,8 @@ router.post("/login", (req, res) => {
 						},
 						accessToken: jwt.sign(user, tokenSecret),
 					});
-				} else res.status(401).send({ message: "Password incorrect" });
-			} else res.status(401).send({ message: "Username not exist" });
+				} else res.status(400).send({ message: "Password incorrect" });
+			} else res.status(400).send({ message: "Username not exist" });
 		})
 		.catch((err) => {
 			console.log(err);
